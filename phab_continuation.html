@@ -1,470 +1,1575 @@
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-phab-coral/20 rounded-full flex items-center justify-center text-phab-coral font-bold">R</div>
-                        <div>
-                            <div class="font-semibold text-sm">Rohit Mehta</div>
-                            <div class="text-xs text-gray-500">Verified Buyer</div>
+
+# Create a premium, conversion-focused website for LUME LIVING
+# Based on the brand description provided by the user
+# Features: Chat widget, shadcn/ui components, DaisyUI styling, Lenis smooth scroll
+
+html_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUME LIVING | Handmade Soy Wax Candles & Home Decor</title>
+    <meta name="description" content="Handmade Soy Wax Candles, Home Decor, Bespoke Gifting, Dry Fruits Hampers, Candle Making Workshops. Based in Siliguri, Shipping Pan India.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                        'elegant': ['Cormorant Garamond', 'serif'],
+                    },
+                    colors: {
+                        'lume': {
+                            'cream': '#FAF7F2',
+                            'warm': '#F5EDE0',
+                            'sand': '#E8D5B7',
+                            'taupe': '#C4A882',
+                            'mocha': '#8B6914',
+                            'espresso': '#3D2B1F',
+                            'charcoal': '#2C2420',
+                            'gold': '#D4AF37',
+                            'rose': '#C9A9A6',
+                            'sage': '#A8B5A0',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html.lenis, html.lenis body { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-smooth iframe { pointer-events: none; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FAF7F2;
+            color: #2C2420;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FAF7F2; }
+        ::-webkit-scrollbar-thumb { background: #C4A882; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8B6914; }
+        
+        /* Hero Text Animation */
+        .hero-title span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(60px);
+        }
+        
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.3);
+            pointer-events: none;
+        }
+        
+        /* Glass morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .glass-dark {
+            background: rgba(44, 36, 32, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Product card hover */
+        .product-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(139, 105, 20, 0.25);
+        }
+        .product-card:hover .product-image {
+            transform: scale(1.08);
+        }
+        .product-image {
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Button shine effect */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(255,255,255,0.3) 50%,
+                transparent 100%
+            );
+            transform: rotate(30deg) translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .btn-shine:hover::after {
+            transform: rotate(30deg) translateX(100%);
+        }
+        
+        /* Marquee */
+        .marquee-track {
+            display: flex;
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Workshop card */
+        .workshop-card {
+            transition: all 0.4s ease;
+        }
+        .workshop-card:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Testimonial */
+        .testimonial-card {
+            transition: all 0.4s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Navigation */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #8B6914;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 50;
+        }
+        
+        .chat-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 360px;
+            max-height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .chat-window.active {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        
+        /* Candle flame animation */
+        @keyframes flicker {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.95) translateY(2px); }
+            25% { opacity: 0.9; transform: scale(1.02); }
+            75% { opacity: 1; transform: scale(0.98); }
+        }
+        .flame {
+            animation: flicker 2s ease-in-out infinite;
+        }
+        
+        /* Glow effect */
+        .glow {
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #C4A882, transparent);
+        }
+        
+        /* Image mask */
+        .image-mask {
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+        
+        /* Custom cursor for interactive elements */
+        .cursor-glow {
+            cursor: pointer;
+        }
+        
+        /* Loading shimmer */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        /* Parallax container */
+        .parallax-bg {
+            will-change: transform;
+        }
+        
+        /* Magnetic button effect */
+        .magnetic-btn {
+            transition: transform 0.3s ease;
+        }
+        
+        /* Instagram feed grid */
+        .insta-grid-item {
+            position: relative;
+            overflow: hidden;
+        }
+        .insta-grid-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(44, 36, 32, 0);
+            transition: background 0.3s ease;
+        }
+        .insta-grid-item:hover::after {
+            background: rgba(44, 36, 32, 0.3);
+        }
+        .insta-grid-item:hover img {
+            transform: scale(1.1);
+        }
+        .insta-grid-item img {
+            transition: transform 0.6s ease;
+        }
+        
+        /* Number counter animation */
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="bg-lume-cream">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-lume-gold/50 glow">
+                        <img src="https://github.com/gaur3009-p/index1/blob/main/587970850_17857526709574673_4136153302134993783_n.jpg?raw=true" 
+                             alt="LUME LIVING Logo" 
+                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-display text-xl font-bold text-lume-espresso tracking-wide">LUME</span>
+                        <span class="font-elegant text-sm text-lume-mocha -mt-1 tracking-[0.3em]">LIVING</span>
+                    </div>
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center gap-10">
+                    <a href="#products" class="nav-link font-body text-sm font-medium text-lume-charcoal hover:text-lume-mocha transition-colors">Products</a>
+                    <a href="#workshops" class="nav-link font-body text-sm font-medium text-lume-charcoal hover:text-lume-mocha transition-colors">Workshops</a>
+                    <a href="#bespoke" class="nav-link font-body text-sm font-medium text-lume-charcoal hover:text-lume-mocha transition-colors">Bespoke</a>
+                    <a href="#about" class="nav-link font-body text-sm font-medium text-lume-charcoal hover:text-lume-mocha transition-colors">Our Story</a>
+                    <a href="#contact" class="nav-link font-body text-sm font-medium text-lume-charcoal hover:text-lume-mocha transition-colors">Contact</a>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <button class="relative p-2 text-lume-charcoal hover:text-lume-mocha transition-colors">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-lume-mocha text-white text-xs rounded-full flex items-center justify-center font-medium">3</span>
+                    </button>
+                    <a href="https://wa.me/917521900880?text=Hi%20LUME%20LIVING!%20I'm%20interested%20in%20your%20products" 
+                       target="_blank"
+                       class="btn-shine bg-lume-espresso text-lume-cream px-6 py-2.5 rounded-full font-body text-sm font-medium hover:bg-lume-mocha transition-colors flex items-center gap-2">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        Order Now
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="lg:hidden p-2 text-lume-charcoal">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="lg:hidden hidden glass-dark mx-4 rounded-2xl p-6 mt-2">
+            <div class="flex flex-col gap-4">
+                <a href="#products" class="font-body text-lume-cream hover:text-lume-gold transition-colors">Products</a>
+                <a href="#workshops" class="font-body text-lume-cream hover:text-lume-gold transition-colors">Workshops</a>
+                <a href="#bespoke" class="font-body text-lume-cream hover:text-lume-gold transition-colors">Bespoke</a>
+                <a href="#about" class="font-body text-lume-cream hover:text-lume-gold transition-colors">Our Story</a>
+                <a href="#contact" class="font-body text-lume-cream hover:text-lume-gold transition-colors">Contact</a>
+                <hr class="border-lume-taupe/30">
+                <a href="https://wa.me/917521900880?text=Hi%20LUME%20LIVING!%20I'm%20interested%20in%20your%20products" 
+                   target="_blank"
+                   class="bg-lume-gold text-lume-espresso px-6 py-3 rounded-full font-body text-sm font-medium text-center flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    Order on WhatsApp
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Parallax -->
+        <div class="absolute inset-0 parallax-bg">
+            <img src="https://images.unsplash.com/photo-1602607688656-7c9b9b9b0b0b?w=1920&q=80" 
+                 alt="Luxury candles ambiance" 
+                 class="w-full h-full object-cover opacity-40"
+                 id="heroBg">
+            <div class="absolute inset-0 bg-gradient-to-b from-lume-cream/80 via-lume-cream/40 to-lume-cream"></div>
+        </div>
+        
+        <!-- Floating Particles -->
+        <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+        
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+            <div class="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-lume-sand/50">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="font-body text-xs font-medium text-lume-mocha tracking-wide uppercase">Shipping Pan India</span>
+            </div>
+            
+            <h1 class="hero-title font-display text-5xl md:text-7xl lg:text-8xl font-bold text-lume-espresso leading-tight mb-6">
+                <span>Illuminate</span>
+                <span>Your</span>
+                <span class="text-lume-mocha italic">Space</span>
+            </h1>
+            
+            <p class="font-elegant text-xl md:text-2xl text-lume-mocha/80 mb-4 max-w-2xl mx-auto leading-relaxed">
+                Hand-poured soy wax candles, curated home decor & bespoke gifting experiences
+            </p>
+            
+            <p class="font-body text-sm text-lume-taupe mb-10 tracking-wide uppercase">
+                Based in Siliguri &middot; Crafted with Love &middot; Delivered with Care
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#products" 
+                   class="btn-shine bg-lume-espresso text-lume-cream px-8 py-4 rounded-full font-body text-sm font-semibold hover:bg-lume-charcoal transition-all flex items-center gap-3 shadow-xl shadow-lume-espresso/20">
+                    <span>Explore Collection</span>
+                    <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                </a>
+                <a href="https://wa.me/917521900880?text=Hi%20LUME%20LIVING!%20I'd%20like%20to%20place%20a%20custom%20order" 
+                   target="_blank"
+                   class="glass text-lume-espresso px-8 py-4 rounded-full font-body text-sm font-semibold hover:bg-lume-warm transition-all flex items-center gap-3 border-lume-sand">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>Custom Order</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+            <span class="font-body text-xs text-lume-taupe tracking-widest uppercase">Scroll</span>
+            <div class="w-6 h-10 rounded-full border-2 border-lume-taupe/50 flex justify-center pt-2">
+                <div class="w-1.5 h-3 bg-lume-mocha rounded-full animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Banner -->
+    <div class="py-6 bg-lume-espresso overflow-hidden">
+        <div class="marquee-track whitespace-nowrap">
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Soy Wax Candles</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Home Decor</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Bespoke Gifting</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Dry Fruits Hampers</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Candle Making Workshops</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Bulk Orders</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Custom Orders</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Soy Wax Candles</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Home Decor</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Bespoke Gifting</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Dry Fruits Hampers</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Candle Making Workshops</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Bulk Orders</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+            <span class="font-elegant text-2xl text-lume-cream/80 mx-8">Custom Orders</span>
+            <span class="text-lume-gold mx-4">&#10022;</span>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center reveal">
+                <div class="font-display text-4xl md:text-5xl font-bold text-lume-mocha counter" data-target="5000">0</div>
+                <div class="font-body text-sm text-lume-taupe mt-2 uppercase tracking-wider">Candles Sold</div>
+            </div>
+            <div class="text-center reveal">
+                <div class="font-display text-4xl md:text-5xl font-bold text-lume-mocha counter" data-target="200">0</div>
+                <div class="font-body text-sm text-lume-taupe mt-2 uppercase tracking-wider">Workshops Hosted</div>
+            </div>
+            <div class="text-center reveal">
+                <div class="font-display text-4xl md:text-5xl font-bold text-lume-mocha counter" data-target="28">0</div>
+                <div class="font-body text-sm text-lume-taupe mt-2 uppercase tracking-wider">States Delivered</div>
+            </div>
+            <div class="text-center reveal">
+                <div class="font-display text-4xl md:text-5xl font-bold text-lume-mocha counter" data-target="100">0</div>
+                <div class="font-body text-sm text-lume-taupe mt-2 uppercase tracking-wider">% Handmade</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- Products Section -->
+    <section id="products" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="font-body text-xs font-semibold text-lume-mocha uppercase tracking-[0.3em]">Our Collection</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-lume-espresso mt-3 mb-4">Curated for You</h2>
+                <p class="font-elegant text-lg text-lume-mocha/70 max-w-xl mx-auto">Every piece is hand-crafted with premium soy wax and essential oils for a clean, long-lasting burn</p>
+            </div>
+            
+            <!-- Category Filter -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12 reveal">
+                <button class="filter-btn active px-6 py-2 rounded-full font-body text-sm border border-lume-sand bg-lume-espresso text-lume-cream transition-all" data-filter="all">All</button>
+                <button class="filter-btn px-6 py-2 rounded-full font-body text-sm border border-lume-sand text-lume-charcoal hover:bg-lume-warm transition-all" data-filter="candles">Soy Candles</button>
+                <button class="filter-btn px-6 py-2 rounded-full font-body text-sm border border-lume-sand text-lume-charcoal hover:bg-lume-warm transition-all" data-filter="decor">Home Decor</button>
+                <button class="filter-btn px-6 py-2 rounded-full font-body text-sm border border-lume-sand text-lume-charcoal hover:bg-lume-warm transition-all" data-filter="gifts">Gift Hampers</button>
+            </div>
+            
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="productGrid">
+                <!-- Product 1 -->
+                <div class="product-card group bg-white rounded-3xl overflow-hidden shadow-lg shadow-lume-sand/20" data-category="candles">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?w=600&q=80" 
+                             alt="Lavender Dreams Soy Candle" 
+                             class="product-image w-full h-full object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-lume-gold text-lume-espresso text-xs font-semibold px-3 py-1 rounded-full">Bestseller</span>
+                        </div>
+                        <div class="absolute inset-0 bg-lume-espresso/0 group-hover:bg-lume-espresso/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <button class="bg-white text-lume-espresso px-6 py-3 rounded-full font-body text-sm font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-1 mb-2">
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <span class="font-body text-xs text-lume-taupe ml-1">(128)</span>
+                        </div>
+                        <h3 class="font-display text-xl font-semibold text-lume-espresso mb-1">Lavender Dreams</h3>
+                        <p class="font-body text-sm text-lume-taupe mb-3">Calming lavender & vanilla blend in a frosted glass jar</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-display text-2xl font-bold text-lume-mocha">₹599</span>
+                                <span class="font-body text-sm text-lume-taupe line-through ml-2">₹799</span>
+                            </div>
+                            <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20buying%20Lavender%20Dreams%20candle" 
+                               target="_blank"
+                               class="bg-lume-espresso text-lume-cream p-3 rounded-full hover:bg-lume-mocha transition-colors">
+                                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
-
-                <div class="p-8 rounded-3xl bg-gray-900/50 border border-gray-800 hover:border-phab-teal/30 transition-all reveal-section">
-                    <div class="flex items-center gap-1 mb-4">
-                        <i data-lucide="star" class="w-5 h-5 text-phab-gold fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-phab-gold fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-phab-gold fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-phab-gold fill-current"></i>
-                        <i data-lucide="star" class="w-5 h-5 text-phab-gold fill-current"></i>
+                
+                <!-- Product 2 -->
+                <div class="product-card group bg-white rounded-3xl overflow-hidden shadow-lg shadow-lume-sand/20" data-category="candles">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1572726729207-a78d6feb18d7?w=600&q=80" 
+                             alt="Rose Gold Elegance Candle" 
+                             class="product-image w-full h-full object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-lume-rose text-white text-xs font-semibold px-3 py-1 rounded-full">New</span>
+                        </div>
+                        <div class="absolute inset-0 bg-lume-espresso/0 group-hover:bg-lume-espresso/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <button class="bg-white text-lume-espresso px-6 py-3 rounded-full font-body text-sm font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                Quick View
+                            </button>
+                        </div>
                     </div>
-                    <p class="text-gray-300 mb-6 leading-relaxed">"The Cookies & Cream wafer is my go-to pre-workout snack. 10g protein, zero sugar, and it actually tastes like a real wafer. Phab nailed it."</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-400 font-bold">K</div>
-                        <div>
-                            <div class="font-semibold text-sm">Karan Patel</div>
-                            <div class="text-xs text-gray-500">Gym Regular</div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-1 mb-2">
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <span class="font-body text-xs text-lume-taupe ml-1">(86)</span>
+                        </div>
+                        <h3 class="font-display text-xl font-semibold text-lume-espresso mb-1">Rose Gold Elegance</h3>
+                        <p class="font-body text-sm text-lume-taupe mb-3">Rose & oud wood in a metallic copper vessel</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-display text-2xl font-bold text-lume-mocha">₹749</span>
+                                <span class="font-body text-sm text-lume-taupe line-through ml-2">₹999</span>
+                            </div>
+                            <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20buying%20Rose%20Gold%20Elegance%20candle" 
+                               target="_blank"
+                               class="bg-lume-espresso text-lume-cream p-3 rounded-full hover:bg-lume-mocha transition-colors">
+                                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card group bg-white rounded-3xl overflow-hidden shadow-lg shadow-lume-sand/20" data-category="candles">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?w=600&q=80" 
+                             alt="Citrus Burst Soy Candle" 
+                             class="product-image w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-lume-espresso/0 group-hover:bg-lume-espresso/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <button class="bg-white text-lume-espresso px-6 py-3 rounded-full font-body text-sm font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-1 mb-2">
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 fill-lume-gold text-lume-gold"></i>
+                            <i data-lucide="star" class="w-3 h-3 text-lume-sand"></i>
+                            <span class="font-body text-xs text-lume-taupe ml-1">(64)</span>
+                        </div>
+                        <h3 class="font-display text-xl font-semibold text-lume-espresso mb-1">Citrus Burst</h3>
+                        <p class="font-body text-sm text-lume-taupe mb-3">Grapefruit & bergamot in a clear glass tumbler</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-display text-2xl font-bold text-lume-mocha">₹549</span>
+                                <span class="font-body text-sm text-lume-taupe line-through ml-2">₹699</span>
+                            </div>
+                            <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20buying%20Citrus%20Burst%20candle" 
+                               target="_blank"
+                               class="bg-lume-espresso text-lume-cream p-3 rounded-full hover:bg-lume-mocha transition-colors">
+                                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 - Home Decor -->
+                <div class="product-card group bg-white rounded-3xl overflow-hidden shadow-lg shadow-lume-sand/20" data-category="decor">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4f9d?w=600&q=80" 
+                             alt="Minimalist Ceramic Vase Set" 
+                             class="product-image w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-lume-espresso/0 group-hover:bg-lume-espresso/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <button class="bg-white text-lume-espresso px-6 py-3 rounded-full font-body text-sm font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-semibold text-lume-espresso mb-1">Ceramic Vase Trio</h3>
+                        <p class="font-body text-sm text-lume-taupe mb-3">Hand-crafted minimalist vases in matte white finish</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-display text-2xl font-bold text-lume-mocha">₹1,299</span>
+                                <span class="font-body text-sm text-lume-taupe line-through ml-2">₹1,599</span>
+                            </div>
+                            <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20buying%20Ceramic%20Vase%20Trio" 
+                               target="_blank"
+                               class="bg-lume-espresso text-lume-cream p-3 rounded-full hover:bg-lume-mocha transition-colors">
+                                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5 - Gifts -->
+                <div class="product-card group bg-white rounded-3xl overflow-hidden shadow-lg shadow-lume-sand/20" data-category="gifts">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&q=80" 
+                             alt="Luxury Dry Fruits Hamper" 
+                             class="product-image w-full h-full object-cover">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-lume-sage text-white text-xs font-semibold px-3 py-1 rounded-full">Popular</span>
+                        </div>
+                        <div class="absolute inset-0 bg-lume-espresso/0 group-hover:bg-lume-espresso/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <button class="bg-white text-lume-espresso px-6 py-3 rounded-full font-body text-sm font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-semibold text-lume-espresso mb-1">Festive Hamper</h3>
+                        <p class="font-body text-sm text-lume-taupe mb-3">Premium dry fruits, candles & decor in a gift box</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-display text-2xl font-bold text-lume-mocha">₹2,499</span>
+                                <span class="font-body text-sm text-lume-taupe line-through ml-2">₹2,999</span>
+                            </div>
+                            <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20buying%20Festive%20Hamper" 
+                               target="_blank"
+                               class="bg-lume-espresso text-lume-cream p-3 rounded-full hover:bg-lume-mocha transition-colors">
+                                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 6 - Decor -->
+                <div class="product-card group bg-white rounded-3xl overflow-hidden shadow-lg shadow-lume-sand/20" data-category="decor">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1584589167171-541ce45f1eea?w=600&q=80" 
+                             alt="Macrame Wall Hanging" 
+                             class="product-image w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-lume-espresso/0 group-hover:bg-lume-espresso/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <button class="bg-white text-lume-espresso px-6 py-3 rounded-full font-body text-sm font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-semibold text-lume-espresso mb-1">Boho Macrame</h3>
+                        <p class="font-body text-sm text-lume-taupe mb-3">Hand-woven cotton wall hanging with wooden beads</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="font-display text-2xl font-bold text-lume-mocha">₹899</span>
+                                <span class="font-body text-sm text-lume-taupe line-through ml-2">₹1,199</span>
+                            </div>
+                            <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20buying%20Boho%20Macrame" 
+                               target="_blank"
+                               class="bg-lume-espresso text-lume-cream p-3 rounded-full hover:bg-lume-mocha transition-colors">
+                                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- View All Button -->
+            <div class="text-center mt-12 reveal">
+                <a href="https://wa.me/917521900880?text=Hi!%20I'd%20like%20to%20see%20your%20full%20catalog" 
+                   target="_blank"
+                   class="inline-flex items-center gap-3 px-8 py-4 border-2 border-lume-mocha text-lume-mocha rounded-full font-body text-sm font-semibold hover:bg-lume-mocha hover:text-lume-cream transition-all">
+                    <span>View Full Catalog</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 
-            <div class="mt-12 text-center reveal-section">
-                <div class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-phab-teal/10 border border-phab-teal/20 text-phab-teal font-semibold">
-                    <i data-lucide="shield-check" class="w-5 h-5"></i>
-                    4.8/5 Average Rating — 50,000+ Reviews
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- Workshops Section -->
+    <section id="workshops" class="py-24 px-6 bg-lume-warm">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <span class="font-body text-xs font-semibold text-lume-mocha uppercase tracking-[0.3em]">Learn the Art</span>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold text-lume-espresso mt-3 mb-6">Candle Making Workshops</h2>
+                    <p class="font-elegant text-lg text-lume-mocha/80 mb-8 leading-relaxed">
+                        Join our immersive workshops where you'll learn the art of hand-pouring soy wax candles. 
+                        Perfect for beginners and enthusiasts alike. Take home your own creations!
+                    </p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-lume-sand flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="flame" class="w-5 h-5 text-lume-mocha"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-display font-semibold text-lume-espresso">Hands-On Experience</h4>
+                                <p class="font-body text-sm text-lume-taupe">Learn wicking, pouring, and scent blending techniques</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-lume-sand flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="palette" class="w-5 h-5 text-lume-mocha"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-display font-semibold text-lume-espresso">Custom Designs</h4>
+                                <p class="font-body text-sm text-lume-taupe">Create your own colors, scents, and vessel designs</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-lume-sand flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="users" class="w-5 h-5 text-lume-mocha"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-display font-semibold text-lume-espresso">Group Sessions</h4>
+                                <p class="font-body text-sm text-lume-taupe">Perfect for team building, birthdays, or hen parties</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20booking%20a%20candle%20making%20workshop" 
+                       target="_blank"
+                       class="btn-shine inline-flex items-center gap-3 bg-lume-espresso text-lume-cream px-8 py-4 rounded-full font-body text-sm font-semibold hover:bg-lume-charcoal transition-all">
+                        <span>Book a Workshop</span>
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                    </a>
+                </div>
+                
+                <div class="relative reveal">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-4">
+                            <img src="https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?w=400&q=80" 
+                                 alt="Workshop scene 1" 
+                                 class="rounded-2xl shadow-lg w-full h-48 object-cover">
+                            <img src="https://images.unsplash.com/photo-1602607688656-7c9b9b9b0b0b?w=400&q=80" 
+                                 alt="Workshop scene 2" 
+                                 class="rounded-2xl shadow-lg w-full h-64 object-cover">
+                        </div>
+                        <div class="space-y-4 pt-8">
+                            <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&q=80" 
+                                 alt="Workshop scene 3" 
+                                 class="rounded-2xl shadow-lg w-full h-64 object-cover">
+                            <img src="https://images.unsplash.com/photo-1572726729207-a78d6feb18d7?w=400&q=80" 
+                                 alt="Workshop scene 4" 
+                                 class="rounded-2xl shadow-lg w-full h-48 object-cover">
+                        </div>
+                    </div>
+                    <!-- Floating badge -->
+                    <div class="absolute -bottom-4 -left-4 glass px-6 py-4 rounded-2xl shadow-xl">
+                        <div class="font-display text-2xl font-bold text-lume-mocha">₹1,999</div>
+                        <div class="font-body text-xs text-lume-taupe">per person</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="py-24 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-phab-teal/10 via-transparent to-phab-coral/5"></div>
-        <div class="max-w-5xl mx-auto px-6 lg:px-12 text-center relative z-10">
-            <div class="reveal-section">
-                <h2 class="text-4xl md:text-6xl lg:text-7xl font-black mb-6">
-                    Ready to <span class="liquid-text">Cheat</span><br>
-                    <span class="text-white">Without Guilt?</span>
-                </h2>
-                <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-                    Join 50,000+ Indians who have made the switch. Free shipping on orders above Rs.499.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button onclick="scrollToProducts()" class="px-10 py-5 bg-phab-teal text-phab-dark rounded-full font-bold text-lg hover:bg-phab-cyan transition-all btn-pulse inline-flex items-center justify-center gap-2">
-                        Shop Now
-                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                    </button>
-                    <a href="https://www.getphab.com" target="_blank" class="px-10 py-5 border border-white/20 rounded-full font-semibold hover:bg-white/10 transition-all inline-flex items-center justify-center gap-2">
-                        Visit Official Store
-                        <i data-lucide="external-link" class="w-5 h-5"></i>
-                    </a>
+    <!-- Bespoke Section -->
+    <section id="bespoke" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="font-body text-xs font-semibold text-lume-mocha uppercase tracking-[0.3em]">Tailored For You</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-lume-espresso mt-3 mb-4">Bespoke Gifting</h2>
+                <p class="font-elegant text-lg text-lume-mocha/70 max-w-xl mx-auto">Corporate gifts, wedding favors, or personal celebrations — we craft memories</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Corporate -->
+                <div class="workshop-card group relative overflow-hidden rounded-3xl bg-lume-espresso text-lume-cream p-8 reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-lume-gold/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-lume-gold/20 flex items-center justify-center mb-6">
+                            <i data-lucide="briefcase" class="w-7 h-7 text-lume-gold"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold mb-3">Corporate Gifting</h3>
+                        <p class="font-body text-sm text-lume-cream/70 mb-6">Custom-branded candles and hampers for clients, employees, and events. Bulk orders available.</p>
+                        <ul class="space-y-2 mb-8">
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-cream/80">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-gold"></i>
+                                Logo customization
+                            </li>
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-cream/80">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-gold"></i>
+                                Bulk pricing
+                            </li>
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-cream/80">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-gold"></i>
+                                Pan India delivery
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20corporate%20gifting%20options" 
+                           target="_blank"
+                           class="inline-flex items-center gap-2 text-lume-gold font-body text-sm font-semibold hover:gap-3 transition-all">
+                            Enquire Now <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Wedding -->
+                <div class="workshop-card group relative overflow-hidden rounded-3xl bg-white border border-lume-sand/50 p-8 reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-lume-rose/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-lume-rose/20 flex items-center justify-center mb-6">
+                            <i data-lucide="heart" class="w-7 h-7 text-lume-rose"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-lume-espresso mb-3">Wedding Favors</h3>
+                        <p class="font-body text-sm text-lume-taupe mb-6">Elegant candle favors that your guests will cherish. Personalized tags and scents available.</p>
+                        <ul class="space-y-2 mb-8">
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-taupe">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-rose"></i>
+                                Custom labels
+                            </li>
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-taupe">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-rose"></i>
+                                Scent matching
+                            </li>
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-taupe">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-rose"></i>
+                                Gift packaging
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20wedding%20favor%20candles" 
+                           target="_blank"
+                           class="inline-flex items-center gap-2 text-lume-rose font-body text-sm font-semibold hover:gap-3 transition-all">
+                            Enquire Now <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Custom -->
+                <div class="workshop-card group relative overflow-hidden rounded-3xl bg-lume-warm p-8 reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-lume-sage/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-2xl bg-lume-sage/20 flex items-center justify-center mb-6">
+                            <i data-lucide="sparkles" class="w-7 h-7 text-lume-sage"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-lume-espresso mb-3">Custom Orders</h3>
+                        <p class="font-body text-sm text-lume-taupe mb-6">Have a unique vision? We bring your ideas to life with fully custom candle designs and scents.</p>
+                        <ul class="space-y-2 mb-8">
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-taupe">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-sage"></i>
+                                Unique shapes
+                            </li>
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-taupe">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-sage"></i>
+                                Custom scents
+                            </li>
+                            <li class="flex items-center gap-2 font-body text-sm text-lume-taupe">
+                                <i data-lucide="check" class="w-4 h-4 text-lume-sage"></i>
+                                Special packaging
+                            </li>
+                        </ul>
+                        <a href="https://wa.me/917521900880?text=Hi!%20I'd%20like%20to%20discuss%20a%20custom%20candle%20order" 
+                           target="_blank"
+                           class="inline-flex items-center gap-2 text-lume-sage font-body text-sm font-semibold hover:gap-3 transition-all">
+                            Enquire Now <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- About / Story Section -->
+    <section id="about" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="relative reveal">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1602607688656-7c9b9b9b0b0b?w=800&q=80" 
+                             alt="LUME LIVING crafting candles" 
+                             class="w-full h-[500px] object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-lume-espresso/60 to-transparent"></div>
+                        <div class="absolute bottom-8 left-8 right-8">
+                            <p class="font-elegant text-2xl text-lume-cream italic">"Every candle tells a story of warmth, love, and light."</p>
+                        </div>
+                    </div>
+                    <!-- Floating elements -->
+                    <div class="absolute -top-6 -right-6 w-24 h-24 bg-lume-gold/20 rounded-full blur-xl"></div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-lume-rose/20 rounded-full blur-xl"></div>
+                </div>
+                
+                <div class="reveal">
+                    <span class="font-body text-xs font-semibold text-lume-mocha uppercase tracking-[0.3em]">Our Story</span>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold text-lume-espresso mt-3 mb-6">Born in Siliguri, Loved Across India</h2>
+                    <div class="space-y-4 font-body text-lume-mocha/80 leading-relaxed">
+                        <p>
+                            LUME LIVING began as a small passion project in Siliguri, with a simple belief: that the glow of a handmade candle can transform any space into a sanctuary.
+                        </p>
+                        <p>
+                            What started in a home kitchen has grown into a beloved brand, shipping handcrafted soy wax candles, curated home decor, and bespoke gift hampers to customers across all 28 states of India.
+                        </p>
+                        <p>
+                            Every product is 100% handmade using premium, eco-friendly materials. We believe in slow living, mindful creation, and the joy of gifting something truly personal.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-6 mt-8">
+                        <div class="glass p-4 rounded-2xl">
+                            <div class="font-display text-3xl font-bold text-lume-mocha">100%</div>
+                            <div class="font-body text-sm text-lume-taupe">Handmade</div>
+                        </div>
+                        <div class="glass p-4 rounded-2xl">
+                            <div class="font-display text-3xl font-bold text-lume-mocha">Eco</div>
+                            <div class="font-body text-sm text-lume-taupe">Friendly</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 px-6 bg-lume-warm">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="font-body text-xs font-semibold text-lume-mocha uppercase tracking-[0.3em]">Testimonials</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-lume-espresso mt-3 mb-4">What Our Customers Say</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-white p-8 rounded-3xl shadow-lg reveal">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                    </div>
+                    <p class="font-body text-lume-charcoal/80 mb-6 leading-relaxed">"The Lavender Dreams candle is absolutely divine! The scent fills my entire room and the burn time is incredible. Already ordered 3 more for gifting!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-lume-sand flex items-center justify-center">
+                            <span class="font-display font-bold text-lume-mocha">P</span>
+                        </div>
+                        <div>
+                            <div class="font-body text-sm font-semibold text-lume-espresso">Priya Sharma</div>
+                            <div class="font-body text-xs text-lume-taupe">Mumbai</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white p-8 rounded-3xl shadow-lg reveal">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                    </div>
+                    <p class="font-body text-lume-charcoal/80 mb-6 leading-relaxed">"Attended their candle making workshop with my team. It was the best team-building activity we've ever done. The instructor was patient and the candles turned out beautiful!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-lume-sand flex items-center justify-center">
+                            <span class="font-display font-bold text-lume-mocha">R</span>
+                        </div>
+                        <div>
+                            <div class="font-body text-sm font-semibold text-lume-espresso">Rahul Verma</div>
+                            <div class="font-body text-xs text-lume-taupe">Delhi</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white p-8 rounded-3xl shadow-lg reveal">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-lume-gold text-lume-gold"></i>
+                    </div>
+                    <p class="font-body text-lume-charcoal/80 mb-6 leading-relaxed">"Ordered 50 custom candles as wedding favors. The packaging was elegant, the scents were unique, and our guests loved them! Thank you LUME LIVING for making our day special."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-lume-sand flex items-center justify-center">
+                            <span class="font-display font-bold text-lume-mocha">A</span>
+                        </div>
+                        <div>
+                            <div class="font-body text-sm font-semibold text-lume-espresso">Ananya Gupta</div>
+                            <div class="font-body text-xs text-lume-taupe">Bangalore</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Feed Section -->
+    <section class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="font-body text-xs font-semibold text-lume-mocha uppercase tracking-[0.3em]">Follow Us</span>
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-lume-espresso mt-3 mb-4">@lume.livingg</h2>
+                <p class="font-elegant text-lg text-lume-mocha/70">Join our community of 10,000+ candle lovers</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="insta-grid-item rounded-2xl overflow-hidden aspect-square reveal">
+                    <img src="https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?w=400&q=80" alt="Instagram post 1" class="w-full h-full object-cover">
+                </div>
+                <div class="insta-grid-item rounded-2xl overflow-hidden aspect-square reveal">
+                    <img src="https://images.unsplash.com/photo-1572726729207-a78d6feb18d7?w=400&q=80" alt="Instagram post 2" class="w-full h-full object-cover">
+                </div>
+                <div class="insta-grid-item rounded-2xl overflow-hidden aspect-square reveal">
+                    <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&q=80" alt="Instagram post 3" class="w-full h-full object-cover">
+                </div>
+                <div class="insta-grid-item rounded-2xl overflow-hidden aspect-square reveal">
+                    <img src="https://images.unsplash.com/photo-1605651202774-7d573fd3f12d?w=400&q=80" alt="Instagram post 4" class="w-full h-full object-cover">
+                </div>
+                <div class="insta-grid-item rounded-2xl overflow-hidden aspect-square reveal">
+                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4f9d?w=400&q=80" alt="Instagram post 5" class="w-full h-full object-cover">
+                </div>
+                <div class="insta-grid-item rounded-2xl overflow-hidden aspect-square reveal">
+                    <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80" alt="Instagram post 6" class="w-full h-full object-cover">
+                </div>
+                <div class="insta-grid-item rounded-2xl overflow-hidden aspect-square reveal">
+                    <img src="https://images.unsplash.com/photo-1584589167171-541ce45f1eea?w=400&q=80" alt="Instagram post 7" class="w-full h-full object-cover">
+                </div>
+                <div class="insta-grid-item rounded-2xl overflow-hidden aspect-square reveal">
+                    <img src="https://images.unsplash.com/photo-1602607688656-7c9b9b9b0b0b?w=400&q=80" alt="Instagram post 8" class="w-full h-full object-cover">
+                </div>
+            </div>
+            
+            <div class="text-center mt-10 reveal">
+                <a href="https://www.instagram.com/lume.livingg" target="_blank" 
+                   class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white rounded-full font-body text-sm font-semibold hover:shadow-lg hover:shadow-pink-500/30 transition-all">
+                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                    <span>Follow @lume.livingg</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- Contact / CTA Section -->
+    <section id="contact" class="py-24 px-6">
+        <div class="max-w-4xl mx-auto text-center reveal">
+            <span class="font-body text-xs font-semibold text-lume-mocha uppercase tracking-[0.3em]">Get In Touch</span>
+            <h2 class="font-display text-4xl md:text-6xl font-bold text-lume-espresso mt-3 mb-6">Let's Create Something Beautiful</h2>
+            <p class="font-elegant text-xl text-lume-mocha/70 mb-10 max-w-2xl mx-auto">
+                Whether you're looking for the perfect candle, a unique gift, or want to learn the art of candle making — we're here to help.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                <a href="https://wa.me/917521900880?text=Hi%20LUME%20LIVING!%20I'd%20like%20to%20place%20an%20order" 
+                   target="_blank"
+                   class="btn-shine bg-green-600 text-white px-8 py-4 rounded-full font-body text-sm font-semibold hover:bg-green-700 transition-all flex items-center gap-3 shadow-xl shadow-green-600/20">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    <span>Chat on WhatsApp</span>
+                </a>
+                <a href="mailto:lume.livingg@gmail.com" 
+                   class="glass text-lume-espresso px-8 py-4 rounded-full font-body text-sm font-semibold hover:bg-lume-warm transition-all flex items-center gap-3 border-lume-sand">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    <span>Send an Email</span>
+                </a>
+            </div>
+            
+            <!-- Contact Info Cards -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass p-6 rounded-2xl text-left reveal">
+                    <div class="w-12 h-12 rounded-xl bg-lume-sand/50 flex items-center justify-center mb-4">
+                        <i data-lucide="map-pin" class="w-6 h-6 text-lume-mocha"></i>
+                    </div>
+                    <h4 class="font-display font-semibold text-lume-espresso mb-1">Location</h4>
+                    <p class="font-body text-sm text-lume-taupe">Siliguri, West Bengal<br>India</p>
+                </div>
+                <div class="glass p-6 rounded-2xl text-left reveal">
+                    <div class="w-12 h-12 rounded-xl bg-lume-sand/50 flex items-center justify-center mb-4">
+                        <i data-lucide="truck" class="w-6 h-6 text-lume-mocha"></i>
+                    </div>
+                    <h4 class="font-display font-semibold text-lume-espresso mb-1">Shipping</h4>
+                    <p class="font-body text-sm text-lume-taupe">Pan India Delivery<br>Secure Packaging</p>
+                </div>
+                <div class="glass p-6 rounded-2xl text-left reveal">
+                    <div class="w-12 h-12 rounded-xl bg-lume-sand/50 flex items-center justify-center mb-4">
+                        <i data-lucide="clock" class="w-6 h-6 text-lume-mocha"></i>
+                    </div>
+                    <h4 class="font-display font-semibold text-lume-espresso mb-1">Response Time</h4>
+                    <p class="font-body text-sm text-lume-taupe">Within 2 Hours<br>Mon-Sat, 10AM-8PM</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-800 bg-phab-dark/50 backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 py-16">
-            <div class="grid md:grid-cols-4 gap-12">
-                <div class="md:col-span-2">
-                    <div class="text-3xl font-black mb-4">phab</div>
-                    <p class="text-gray-400 max-w-md mb-6">
-                        India's tastiest protein. Built with passion, crafted with nostalgia, and designed for the health-conscious Indian who refuses to compromise on taste.
+    <footer class="bg-lume-espresso text-lume-cream py-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-full overflow-hidden border border-lume-gold/50">
+                            <img src="https://github.com/gaur3009-p/index1/blob/main/587970850_17857526709574673_4136153302134993783_n.jpg?raw=true" 
+                                 alt="LUME LIVING Logo" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="font-display text-lg font-bold tracking-wide">LUME</span>
+                            <span class="font-elegant text-xs text-lume-taupe block -mt-1 tracking-[0.2em]">LIVING</span>
+                        </div>
+                    </div>
+                    <p class="font-body text-sm text-lume-cream/60 leading-relaxed mb-4">
+                        Hand-poured soy wax candles, curated home decor & bespoke gifting from Siliguri to all of India.
                     </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-phab-teal hover:text-phab-dark transition-all">
-                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                    <div class="flex items-center gap-3">
+                        <a href="https://www.instagram.com/lume.livingg" target="_blank" class="w-9 h-9 rounded-full bg-lume-cream/10 flex items-center justify-center hover:bg-lume-gold/20 transition-colors">
+                            <i data-lucide="instagram" class="w-4 h-4"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-phab-teal hover:text-phab-dark transition-all">
-                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        <a href="https://wa.me/917521900880" target="_blank" class="w-9 h-9 rounded-full bg-lume-cream/10 flex items-center justify-center hover:bg-green-500/20 transition-colors">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-phab-teal hover:text-phab-dark transition-all">
-                            <i data-lucide="facebook" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-phab-teal hover:text-phab-dark transition-all">
-                            <i data-lucide="youtube" class="w-5 h-5"></i>
+                        <a href="mailto:lume.livingg@gmail.com" class="w-9 h-9 rounded-full bg-lume-cream/10 flex items-center justify-center hover:bg-lume-gold/20 transition-colors">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
                         </a>
                     </div>
                 </div>
-
+                
+                <!-- Quick Links -->
                 <div>
-                    <h4 class="font-bold mb-4 text-white">Products</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#products" class="hover:text-phab-teal transition-colors">Cheat Bars</a></li>
-                        <li><a href="#products" class="hover:text-phab-teal transition-colors">Protein Bars</a></li>
-                        <li><a href="#products" class="hover:text-phab-teal transition-colors">Milkshakes</a></li>
-                        <li><a href="#products" class="hover:text-phab-teal transition-colors">Wafers</a></li>
-                        <li><a href="#products" class="hover:text-phab-teal transition-colors">Pocket Protein</a></li>
+                    <h4 class="font-display font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#products" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">Products</a></li>
+                        <li><a href="#workshops" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">Workshops</a></li>
+                        <li><a href="#bespoke" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">Bespoke Gifting</a></li>
+                        <li><a href="#about" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">Our Story</a></li>
                     </ul>
                 </div>
-
+                
+                <!-- Services -->
                 <div>
-                    <h4 class="font-bold mb-4 text-white">Company</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#story" class="hover:text-phab-teal transition-colors">Our Story</a></li>
-                        <li><a href="#nutrition" class="hover:text-phab-teal transition-colors">Why Phab?</a></li>
-                        <li><a href="#" class="hover:text-phab-teal transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-phab-teal transition-colors">Careers</a></li>
-                        <li><a href="#" class="hover:text-phab-teal transition-colors">Contact</a></li>
+                    <h4 class="font-display font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20bulk%20orders" target="_blank" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">Bulk Orders</a></li>
+                        <li><a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20custom%20orders" target="_blank" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">Custom Orders</a></li>
+                        <li><a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20corporate%20gifting" target="_blank" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">Corporate Gifting</a></li>
+                        <li><a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20wedding%20favors" target="_blank" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">Wedding Favors</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-display font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-lume-gold mt-0.5 flex-shrink-0"></i>
+                            <span class="font-body text-sm text-lume-cream/60">Siliguri, West Bengal, India</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-4 h-4 text-lume-gold flex-shrink-0"></i>
+                            <a href="tel:+917521900880" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">+91 75219 00880</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-4 h-4 text-lume-gold flex-shrink-0"></i>
+                            <a href="mailto:lume.livingg@gmail.com" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">lume.livingg@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="instagram" class="w-4 h-4 text-lume-gold flex-shrink-0"></i>
+                            <a href="https://www.instagram.com/lume.livingg" target="_blank" class="font-body text-sm text-lume-cream/60 hover:text-lume-gold transition-colors">@lume.livingg</a>
+                        </li>
                     </ul>
                 </div>
             </div>
-
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="text-gray-500 text-sm">
-                    &copy; 2026 Phab Nutrition Pvt. Ltd. All rights reserved.
-                </div>
-                <div class="flex gap-6 text-sm text-gray-500">
-                    <a href="#" class="hover:text-phab-teal transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-phab-teal transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-phab-teal transition-colors">Shipping Policy</a>
+            
+            <div class="border-t border-lume-cream/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="font-body text-xs text-lume-cream/40">
+                    &copy; 2024 LUME LIVING. All rights reserved. Handmade with love in Siliguri.
+                </p>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="font-body text-xs text-lume-cream/40">Shipping Pan India</span>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Video Modal -->
-    <div id="video-modal" class="fixed inset-0 bg-black/90 z-[70] hidden items-center justify-center p-6">
-        <div class="relative w-full max-w-4xl">
-            <button onclick="closeVideoModal()" class="absolute -top-12 right-0 p-2 text-white hover:text-phab-teal transition-colors">
-                <i data-lucide="x" class="w-8 h-8"></i>
-            </button>
-            <div class="aspect-video bg-gray-900 rounded-2xl flex items-center justify-center">
-                <div class="text-center">
-                    <i data-lucide="play-circle" class="w-20 h-20 text-phab-teal mx-auto mb-4"></i>
-                    <p class="text-gray-400">Brand Story Video Coming Soon</p>
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <div id="chatWindow" class="chat-window glass-dark shadow-2xl">
+            <div class="p-4 border-b border-lume-cream/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full overflow-hidden border border-lume-gold/50">
+                        <img src="https://github.com/gaur3009-p/index1/blob/main/587970850_17857526709574673_4136153302134993783_n.jpg?raw=true" 
+                             alt="LUME LIVING" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-body text-sm font-semibold text-lume-cream">LUME LIVING</h4>
+                        <div class="flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                            <span class="font-body text-xs text-lume-cream/60">Typically replies in 10 min</span>
+                        </div>
+                    </div>
+                    <button id="closeChat" class="ml-auto text-lume-cream/60 hover:text-lume-cream transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-4 h-72 overflow-y-auto space-y-4" id="chatMessages">
+                <div class="flex items-start gap-2">
+                    <div class="w-8 h-8 rounded-full overflow-hidden border border-lume-gold/30 flex-shrink-0">
+                        <img src="https://github.com/gaur3009-p/index1/blob/main/587970850_17857526709574673_4136153302134993783_n.jpg?raw=true" 
+                             alt="LUME" class="w-full h-full object-cover">
+                    </div>
+                    <div class="bg-lume-cream/10 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                        <p class="font-body text-sm text-lume-cream">Hi there! Welcome to LUME LIVING. How can we help you today?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t border-lume-cream/10">
+                <div class="flex items-center gap-2">
+                    <input type="text" 
+                           id="chatInput" 
+                           placeholder="Type a message..." 
+                           class="flex-1 bg-lume-cream/10 border border-lume-cream/20 rounded-full px-4 py-2 font-body text-sm text-lume-cream placeholder:text-lume-cream/40 focus:outline-none focus:border-lume-gold/50">
+                    <button id="sendChat" class="w-10 h-10 rounded-full bg-lume-gold flex items-center justify-center hover:bg-lume-gold/80 transition-colors">
+                        <i data-lucide="send" class="w-4 h-4 text-lume-espresso"></i>
+                    </button>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20your%20candles" 
+                       target="_blank"
+                       class="flex-1 bg-green-600/20 text-green-400 text-xs font-body py-2 rounded-full text-center hover:bg-green-600/30 transition-colors">
+                        I want to buy candles
+                    </a>
+                    <a href="https://wa.me/917521900880?text=Hi!%20I'm%20interested%20in%20a%20workshop" 
+                       target="_blank"
+                       class="flex-1 bg-lume-gold/20 text-lume-gold text-xs font-body py-2 rounded-full text-center hover:bg-lume-gold/30 transition-colors">
+                        Book a workshop
+                    </a>
                 </div>
             </div>
         </div>
+        
+        <button id="chatToggle" class="w-14 h-14 rounded-full bg-lume-espresso text-lume-cream shadow-xl shadow-lume-espresso/30 flex items-center justify-center hover:bg-lume-charcoal transition-all hover:scale-110">
+            <i data-lucide="message-circle" class="w-6 h-6"></i>
+        </button>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 z-[80] transform translate-y-20 opacity-0 transition-all duration-300">
-        <div class="bg-phab-teal text-phab-dark px-6 py-4 rounded-2xl font-bold flex items-center gap-3 shadow-2xl">
-            <i data-lucide="check-circle" class="w-5 h-5"></i>
-            <span id="toast-message">Added to cart!</span>
-        </div>
-    </div>
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/917521900880?text=Hi%20LUME%20LIVING!%20I'm%20interested%20in%20your%20products" 
+       target="_blank"
+       class="fixed bottom-24 right-6 z-40 w-12 h-12 rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30 flex items-center justify-center hover:bg-green-600 transition-all hover:scale-110 animate-bounce">
+        <i data-lucide="message-circle" class="w-5 h-5"></i>
+    </a>
 
-    </div><!-- /page-content -->
+    <!-- Back to Top -->
+    <button id="backToTop" class="fixed bottom-40 right-6 z-40 w-10 h-10 rounded-full glass text-lume-espresso shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all hover:bg-lume-warm">
+        <i data-lucide="chevron-up" class="w-5 h-5"></i>
+    </button>
 
     <script>
-        // Initialize Lucide icons
+        // Initialize Lucide Icons
         lucide.createIcons();
-
-        // Cart state
-        let cart = [];
-
-        // Loading screen
-        window.addEventListener('load', () => {
-            const loaderBar = document.getElementById('loader-bar');
-            const loader = document.getElementById('loader');
-            const pageContent = document.getElementById('page-content');
-
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 30;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        loader.classList.add('hidden');
-                        pageContent.classList.add('loaded');
-                        initAnimations();
-                    }, 500);
-                }
-                loaderBar.style.width = progress + '%';
-            }, 200);
+        
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            smoothTouch: false,
+            touchMultiplier: 2,
         });
-
+        
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        
+        // GSAP ScrollTrigger integration with Lenis
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+        
         // Navbar scroll effect
         const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+        
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('nav-scrolled');
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > 100) {
+                navbar.classList.add('glass', 'shadow-lg');
             } else {
-                navbar.classList.remove('nav-scrolled');
+                navbar.classList.remove('glass', 'shadow-lg');
             }
+            lastScroll = currentScroll;
         });
-
+        
         // Mobile menu toggle
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuToggle.addEventListener('click', () => {
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
-
-        // Cart functions
-        function toggleCart() {
-            const sidebar = document.getElementById('cart-sidebar');
-            const overlay = document.getElementById('cart-overlay');
-            const isOpen = !sidebar.classList.contains('translate-x-full');
-
-            if (isOpen) {
-                sidebar.classList.add('translate-x-full');
-                overlay.classList.add('hidden');
-            } else {
-                sidebar.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-            }
+        
+        // Hero text animation
+        gsap.to('.hero-title span', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'power3.out',
+            delay: 0.5
+        });
+        
+        // Floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = Math.random() * 8 + 4;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.opacity = Math.random() * 0.5 + 0.1;
+            particlesContainer.appendChild(particle);
+            
+            gsap.to(particle, {
+                y: -100,
+                x: Math.random() * 50 - 25,
+                duration: Math.random() * 10 + 10,
+                repeat: -1,
+                ease: 'none',
+                delay: Math.random() * 5
+            });
         }
-
-        function addToCart(name, price, image) {
-            const existing = cart.find(item => item.name === name);
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ name, price, image, qty: 1 });
-            }
-            updateCartUI();
-            showToast(name + ' added to cart!');
-        }
-
-        function removeFromCart(name) {
-            cart = cart.filter(item => item.name !== name);
-            updateCartUI();
-        }
-
-        function updateQty(name, delta) {
-            const item = cart.find(item => item.name === name);
-            if (item) {
-                item.qty += delta;
-                if (item.qty <= 0) {
-                    removeFromCart(name);
-                    return;
-                }
-            }
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const cartItems = document.getElementById('cart-items');
-            const cartCount = document.getElementById('cart-count');
-            const cartFooter = document.getElementById('cart-footer');
-            const cartTotal = document.getElementById('cart-total');
-
-            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-            cartCount.textContent = totalQty;
-
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="text-center text-gray-500 py-12">
-                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-4 opacity-30"></i>
-                        <p>Your cart is empty</p>
-                        <button onclick="toggleCart(); scrollToProducts()" class="mt-4 text-phab-teal font-semibold hover:underline">Start Shopping</button>
+        
+        // Reveal animations
+        const revealElements = document.querySelectorAll('.reveal');
+        revealElements.forEach((el) => {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power3.out'
+            });
+        });
+        
+        // Counter animation
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            gsap.to(counter, {
+                scrollTrigger: {
+                    trigger: counter,
+                    start: 'top 85%'
+                },
+                innerHTML: target,
+                duration: 2,
+                snap: { innerHTML: 1 },
+                ease: 'power2.out'
+            });
+        });
+        
+        // Product filter
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-lume-espresso', 'text-lume-cream');
+                    b.classList.add('text-lume-charcoal');
+                });
+                btn.classList.add('bg-lume-espresso', 'text-lume-cream');
+                btn.classList.remove('text-lume-charcoal');
+                
+                const filter = btn.getAttribute('data-filter');
+                productCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        gsap.to(card, { opacity: 1, scale: 1, duration: 0.4, display: 'block' });
+                    } else {
+                        gsap.to(card, { opacity: 0, scale: 0.9, duration: 0.4, display: 'none' });
+                    }
+                });
+            });
+        });
+        
+        // Chat widget
+        const chatToggle = document.getElementById('chatToggle');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChat = document.getElementById('closeChat');
+        const chatInput = document.getElementById('chatInput');
+        const sendChat = document.getElementById('sendChat');
+        const chatMessages = document.getElementById('chatMessages');
+        
+        chatToggle.addEventListener('click', () => {
+            chatWindow.classList.toggle('active');
+        });
+        
+        closeChat.addEventListener('click', () => {
+            chatWindow.classList.remove('active');
+        });
+        
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                const userMsg = document.createElement('div');
+                userMsg.className = 'flex items-start gap-2 justify-end';
+                userMsg.innerHTML = `
+                    <div class="bg-lume-gold rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%]">
+                        <p class="font-body text-sm text-lume-espresso">${message}</p>
                     </div>
                 `;
-                cartFooter.style.display = 'none';
+                chatMessages.appendChild(userMsg);
+                chatInput.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Simulate reply
+                setTimeout(() => {
+                    const replyMsg = document.createElement('div');
+                    replyMsg.className = 'flex items-start gap-2';
+                    replyMsg.innerHTML = `
+                        <div class="w-8 h-8 rounded-full overflow-hidden border border-lume-gold/30 flex-shrink-0">
+                            <img src="https://github.com/gaur3009-p/index1/blob/main/587970850_17857526709574673_4136153302134993783_n.jpg?raw=true" 
+                                 alt="LUME" class="w-full h-full object-cover">
+                        </div>
+                        <div class="bg-lume-cream/10 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                            <p class="font-body text-sm text-lume-cream">Thanks for reaching out! We'll get back to you shortly. For faster response, please WhatsApp us directly.</p>
+                        </div>
+                    `;
+                    chatMessages.appendChild(replyMsg);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
+        }
+        
+        sendChat.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 500) {
+                backToTop.classList.remove('opacity-0', 'pointer-events-none');
             } else {
-                cartItems.innerHTML = cart.map(item => `
-                    <div class="flex gap-4 items-center bg-gray-900/50 p-4 rounded-2xl border border-gray-800">
-                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl" onerror="this.src='https://via.placeholder.com/64?text=Phab'">
-                        <div class="flex-1 min-w-0">
-                            <div class="font-semibold text-sm truncate">${item.name}</div>
-                            <div class="text-phab-teal font-bold">Rs.${item.price}</div>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="updateQty('${item.name}', -1)" class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
-                                <i data-lucide="minus" class="w-4 h-4"></i>
-                            </button>
-                            <span class="w-6 text-center font-bold">${item.qty}</span>
-                            <button onclick="updateQty('${item.name}', 1)" class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors">
-                                <i data-lucide="plus" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                        <button onclick="removeFromCart('${item.name}')" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
-                            <i data-lucide="trash-2" class="w-4 h-4 text-gray-500"></i>
-                        </button>
-                    </div>
-                `).join('');
-                cartFooter.style.display = 'block';
-                cartTotal.textContent = 'Rs.' + totalPrice;
-            }
-
-            lucide.createIcons();
-        }
-
-        function checkout() {
-            if (cart.length === 0) return;
-            const totalPrice = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-            const items = cart.map(item => `${item.qty}x ${item.name}`).join(', ');
-            const message = `Hello Phab Team! I would like to order: ${items}. Total: Rs.${totalPrice}`;
-            window.open(`https://wa.me/917521900880?text=${encodeURIComponent(message)}`, '_blank');
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-            toastMessage.textContent = message;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
-
-        // Category filter
-        const categoryBtns = document.querySelectorAll('.category-btn');
-        const productCards = document.querySelectorAll('.product-card');
-
-        categoryBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                categoryBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const category = btn.dataset.category;
-                productCards.forEach(card => {
-                    if (category === 'all' || card.dataset.category === category) {
-                        card.style.display = 'block';
-                        setTimeout(() => {
-                            card.style.opacity = '1';
-                            card.style.transform = 'translateY(0)';
-                        }, 10);
-                    } else {
-                        card.style.opacity = '0';
-                        card.style.transform = 'translateY(20px)';
-                        setTimeout(() => {
-                            card.style.display = 'none';
-                        }, 300);
-                    }
-                });
-            });
-        });
-
-        // Scroll to products
-        function scrollToProducts() {
-            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Video modal
-        function openVideoModal() {
-            const modal = document.getElementById('video-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeVideoModal() {
-            const modal = document.getElementById('video-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        // Close modal on escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeVideoModal();
-                const sidebar = document.getElementById('cart-sidebar');
-                if (!sidebar.classList.contains('translate-x-full')) {
-                    toggleCart();
-                }
+                backToTop.classList.add('opacity-0', 'pointer-events-none');
             }
         });
-
-        // Scroll reveal animations
-        function initAnimations() {
-            const revealSections = document.querySelectorAll('.reveal-section');
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
-
-            revealSections.forEach(section => {
-                observer.observe(section);
-            });
-
-            // GSAP animations
-            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-                gsap.registerPlugin(ScrollTrigger);
-
-                // Hero text stagger
-                gsap.from('#hero h1 span', {
-                    y: 100,
-                    opacity: 0,
-                    duration: 1,
-                    stagger: 0.15,
-                    ease: 'power4.out'
-                });
-
-                // Hero image float
-                gsap.from('#hero img', {
-                    scale: 0.8,
-                    opacity: 0,
-                    duration: 1.2,
-                    delay: 0.5,
-                    ease: 'power4.out'
-                });
-
-                // Product cards stagger
-                gsap.from('.product-card', {
-                    scrollTrigger: {
-                        trigger: '#product-grid',
-                        start: 'top 80%'
-                    },
-                    y: 60,
-                    opacity: 0,
-                    duration: 0.8,
-                    stagger: 0.1,
-                    ease: 'power3.out'
-                });
-
-                // Nutrition cards
-                gsap.from('.tilt-card', {
-                    scrollTrigger: {
-                        trigger: '#nutrition',
-                        start: 'top 70%'
-                    },
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.6,
-                    stagger: 0.1,
-                    ease: 'power3.out'
-                });
-            }
-        }
-
-        // 3D Tilt effect on cards
-        document.querySelectorAll('.tilt-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-            });
+        
+        backToTop.addEventListener('click', () => {
+            lenis.scrollTo(0, { duration: 1.5 });
         });
-
+        
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    lenis.scrollTo(target, { offset: -80, duration: 1.5 });
                     mobileMenu.classList.add('hidden');
                 }
             });
         });
-
-        // Parallax effect on blobs
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            document.querySelectorAll('.blob').forEach((blob, index) => {
-                const speed = 0.5 + index * 0.2;
-                blob.style.transform = `translateY(${scrolled * speed}px)`;
+        
+        // Parallax effect for hero
+        gsap.to('#heroBg', {
+            scrollTrigger: {
+                trigger: '#hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            },
+            y: 200,
+            ease: 'none'
+        });
+        
+        // Magnetic button effect
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+        
+        // Add to cart animation
+        document.querySelectorAll('[data-lucide="shopping-bag"]').forEach(btn => {
+            btn.closest('a')?.addEventListener('click', function(e) {
+                const original = this.innerHTML;
+                this.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>';
+                lucide.createIcons();
+                setTimeout(() => {
+                    this.innerHTML = original;
+                    lucide.createIcons();
+                }, 1500);
             });
         });
     </script>
